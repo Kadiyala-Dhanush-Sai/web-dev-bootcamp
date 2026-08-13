@@ -1,0 +1,1 @@
+alert("Welocome to the BootCamp!");

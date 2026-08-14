@@ -2,6 +2,7 @@ const express = require("express");
 
 const app = express();
 app.use(express.static("frontend"));
+app.use(express.json())
 
 var users = [
     {
@@ -71,6 +72,22 @@ var users = [
 
 ]
 
+var nextId = users.length+1;
+
+app.post('/api/users',(req,res)=>{
+    var newUser = req.body;
+    var tempUser = {
+        "id" : nextId,
+        "name":newUser.name,
+        "gender":newUser.gender,
+        "img":newUser.image
+    }
+    nextId++;
+    users.push(tempUser)
+    res.status(201).json({"Message":"User created",
+        "user":tempUser
+    });
+})
 app.get('/api/users', (req, res) => {
     return res.send(users);
 });
@@ -95,17 +112,15 @@ app.get('/api/users/:id', (req, res) => {
     return res.json(users[index - 1]);
 });
 
-
-
-
-
-
-
-
-
-
-
-
+app.put('/api/users/:id',(req,res)=>{
+    var index = Number(req.params.id);
+    if (index < 1 || index > users.length) {
+        return res.status(404).json({
+            message: "User Not Found"
+        });
+    }
+    
+})
 
 app.listen(4000,()=>{
     console.log("Server is running on port http://localhost:4000/ ✅")

@@ -36,3 +36,17 @@ function toggleUser() {
             console.log(error.data);
         })
 }
+function myRandomUser(){
+    fetch('/api/users/random')
+    .then((result)=>{
+        return result.json()
+    })
+    .then((result)=>{
+        nameElement.textContent = result.name;
+        genderElement.textContent = result.gender;
+        imgElement.src =result.image;
+    })
+    .catch((error)=>{
+        console.log(error);
+    })
+}
